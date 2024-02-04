@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import recipeRouter from './api/recipe';
+import './db';
 
 dotenv.config();
 

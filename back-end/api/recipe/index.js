@@ -1,30 +1,15 @@
 import express from 'express';
-import { recipeData } from './recipeData';
-import { v4 as uuidv4 } from 'uuid';
+import Recipe from './recipeModel'
+//import { v4 as uuidv4 } from 'uuid';
 const router = express.Router(); 
 
-router.get('/', (req, res) => {
-    res.json(recipeData);
+router.get('/', async (req, res) => {
+    const recipes = await Recipe.find();
+    res.status(200).json(recipes);
 });
 
-router.get('/:id',(req,res) => {
-    const{ id } = req.params
-    const recipe = recipeData.recipes.find(recipe => recipe.id === id);
-    if(!recipe) {
-        return res.status(404).json({ status: 404, message: 'recipe not found'});   
-    }
-    return res.status(200).json(recipe);
-});
-
-router.post('/',(req,res) => {
-    const{ title, ingredient} = req.body;
-    const newRecipe = {
-        id: uuidv4(),
-        title,
-        ingredient
-    };
-    recipeData.recipes.push(newRecipe);
-    res.status(201).json(newRecipe);
-    recipeData.total_results++;
+router.post('/', async (req, res) => {
+    const recipe = await Recipe(req.body).save();
+    res.status(201).json(recipe);
 });
 export default router;
