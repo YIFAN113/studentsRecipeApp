@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import LoginScreen from '../../pages/loginPage';
 import RegisterScreen from '../../pages/signUpPage';
 import MapScreen from '../../pages/mapPage';
@@ -20,7 +20,10 @@ function MyTabs() {
       <Tab.Screen
         name="Login"
         component={LoginScreen}
-        options={{ tabBarLabel: 'login' }}
+        options={{ tabBarLabel: 'login', tabBarIcon: ({ color, size }) => (
+          <Ionicons name="log-in" color="#4F8EF7" size={30} />
+        )}}
+        
       />
       <Tab.Screen
         name="Register"

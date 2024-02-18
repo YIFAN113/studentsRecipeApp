@@ -5,6 +5,7 @@ import recipeRouter from './api/recipe';
 import usersRouter from './api/users';
 import './db';
 import authenticate from './authenticate';
+import mapRotes from './api/map'
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/recipe',authenticate, recipeRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/map', mapRotes);
 app.use(errHandler);
 
 app.listen(port, () => {
