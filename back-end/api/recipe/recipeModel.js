@@ -6,6 +6,7 @@ const recipeSchema = new mongoose.Schema({
     types: [{type: String}],
     tools: [{type: String}],
     location: {type: String},
+    tags: [{type: String, index: true}],
     ingredients: [{
         name: {type: String, required: true},
         quantity: {type: String}

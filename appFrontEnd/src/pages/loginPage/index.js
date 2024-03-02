@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
 // import { login } from '../../api/user';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const LoginScreen = () => {
@@ -11,17 +12,19 @@ const LoginScreen = () => {
   const handleLoginPress = async () => {
     try {
       const response = await fetch('http://10.0.2.2:8080/api/users', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        method: 'post',
-        body: JSON.stringify({ username: username, password: password })
+        body: JSON.stringify({ username, password })
       });
   
       const result = await response.json();
-  
-      if (response.ok) {
+      
+      if (response.ok && result.success) {
         console.log("Login successful", result);
+        const token = result.token.split(' ')[1];
+        await AsyncStorage.setItem('userToken', token); 
       } else {
         console.error("Login failed", result);
         Alert.alert("Login Failed", result.message || "Please try again.");

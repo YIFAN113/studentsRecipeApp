@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import LoginScreen from '../../pages/loginPage';
 import RegisterScreen from '../../pages/signUpPage';
 import MapScreen from '../../pages/mapPage';
+import HomeScreen from '../../pages/HomePage';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,6 +32,11 @@ function MyTabs() {
         options={{ tabBarLabel: 'signUp' }}
       />
       <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ tabBarLabel: 'Home' }}
+      />
+      <Tab.Screen
         name="Map"
         component={MapScreen}
         options={{ tabBarLabel: 'map' }}
@@ -41,8 +47,8 @@ function MyTabs() {
 
 export default function BottomTabNavigator() {
   return (
-    <NavigationContainer>
+    
       <MyTabs />
-    </NavigationContainer>
+    
   );
 }
