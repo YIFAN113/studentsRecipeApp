@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
   const [recipes, setRecipes] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchRecipes();
@@ -27,7 +29,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.item} onPress={() => console.log('Recipe pressed:', item.title)}>
+    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('recipe', { id: item._id })}>
       <Text style={styles.title}>{item.title}</Text>
     </TouchableOpacity>
   );
@@ -38,6 +40,7 @@ const HomeScreen = ({ navigation }) => {
         data={recipes}
         renderItem={renderItem}
         keyExtractor={item => item._id}
+        numColumns={2}
       />
     </View>
   );
@@ -54,6 +57,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
     alignItems: 'center', 
+    flex: 1,
   },
   title: {
     fontSize: 24,

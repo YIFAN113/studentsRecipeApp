@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation();
 
   const handleLoginPress = async () => {
     try {
@@ -25,6 +26,7 @@ const LoginScreen = () => {
         console.log("Login successful", result);
         const token = result.token.split(' ')[1];
         await AsyncStorage.setItem('userToken', token); 
+        navigation.navigate('Home');
       } else {
         console.error("Login failed", result);
         Alert.alert("Login Failed", result.message || "Please try again.");
