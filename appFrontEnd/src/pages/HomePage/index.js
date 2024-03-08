@@ -34,6 +34,8 @@ const HomeScreen = () => {
     </TouchableOpacity>
   );
 
+
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -42,6 +44,12 @@ const HomeScreen = () => {
         keyExtractor={item => item._id}
         numColumns={2}
       />
+      <TouchableOpacity 
+        style={styles.uploadButton} 
+        onPress={() => navigation.navigate('recipeUpload')}
+      >
+        <Text style={styles.uploadText}>UPLOAD</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -61,6 +69,17 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
+  },
+  uploadButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    backgroundColor: '#007bff',
+    margin: 10,
+  },
+  uploadText: {
+    color: 'white',
+    fontSize: 18,
   },
 });
 
