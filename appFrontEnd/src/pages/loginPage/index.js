@@ -26,6 +26,7 @@ const LoginScreen = () => {
         console.log("Login successful", result);
         const token = result.token.split(' ')[1];
         await AsyncStorage.setItem('userToken', token); 
+        await AsyncStorage.setItem('username', username);
         navigation.navigate('Home');
       } else {
         console.error("Login failed", result);
