@@ -22,6 +22,7 @@ const RecipeUploadScreen = () => {
   useEffect(() => {
     const fetchUsername = async () => {
       const username = await AsyncStorage.getItem('username');
+      console.log("Retrieved username:", username);
       setRecipe(prevRecipe => ({ ...prevRecipe, author: username }));
     };
 
