@@ -40,6 +40,13 @@ const RecipeDetailScreen = ({ route }) => {
         ))}
       </View>
       <View style={styles.section}>
+        <Text style={styles.sectionTitle}>TAGS</Text>
+        {recipe.tags.map((step, index) => (
+          <Text key={index} style={styles.text}>{index + 1}. {step}</Text>
+        ))}
+      </View>
+
+      <View style={styles.section}>
         <Text style={styles.sectionTitle}>COOKING STEPS</Text>
         {recipe.cookingSteps.map((step, index) => (
           <Text key={index} style={styles.text}>{index + 1}. {step}</Text>
