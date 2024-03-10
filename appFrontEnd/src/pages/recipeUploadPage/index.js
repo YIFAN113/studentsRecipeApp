@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, ScrollView, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, ScrollView, Alert, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 const RecipeUploadScreen = () => {
@@ -15,6 +15,10 @@ const RecipeUploadScreen = () => {
     cookingSteps: []
   });
 
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const tags = ["beef", "chicken", "pork", "lamb", "fry"];
+
   useEffect(() => {
     const fetchUsername = async () => {
       const username = await AsyncStorage.getItem('username');
@@ -23,6 +27,25 @@ const RecipeUploadScreen = () => {
 
     fetchUsername();
   }, []);
+
+  const handleSelectTag = (tag) => {
+    setSelectedTags(prevTags => {
+      if (prevTags.includes(tag)) {
+        return prevTags.filter(t => t !== tag);
+      } else {
+        return [...prevTags, tag];
+      }
+    });
+  };
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const addTagsToRecipe = () => {
+    setRecipe({ ...recipe, tags: selectedTags });
+    toggleModal();
+  };
 
   const handleChange = (name, value) => {
     setRecipe({ ...recipe, [name]: value });
@@ -117,7 +140,9 @@ const RecipeUploadScreen = () => {
           />
         </View>
       ))}
-      <Button title="Add Ingredient" onPress={addIngredient} />
+      <TouchableOpacity style={styles.button} onPress={addIngredient}>
+        <Text style={styles.buttonText}>Add Ingredient</Text>
+      </TouchableOpacity>
 
       {recipe.cookingSteps.map((step, index) => (
         <View key={index}>
@@ -130,44 +155,102 @@ const RecipeUploadScreen = () => {
           />
         </View>
       ))}
-      <Button title="Add Cooking Step" onPress={addCookingStep} />
+      <TouchableOpacity style={styles.button} onPress={addCookingStep}>
+        <Text style={styles.buttonText}>Add Cooking Step</Text>
+      </TouchableOpacity>
 
-      <Button onPress={handleSubmit} title="Submit" />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={toggleModal}
+        activeOpacity={0.8} 
+      >
+        <Text style={styles.buttonText}>Add Tag</Text>
+      </TouchableOpacity>
+
+<Modal
+  animationType="slide"
+  transparent={true}
+  visible={isModalVisible}
+  onRequestClose={toggleModal}
+>
+  <View style={styles.modalView}>
+    {tags.map((tag, index) => (
+      <Button 
+        key={index} 
+        title={tag} 
+        onPress={() => handleSelectTag(tag)} 
+        color={selectedTags.includes(tag) ? 'blue' : 'gray'}
+      />
+    ))}
+    <TouchableOpacity style={styles.button} onPress={addTagsToRecipe}>
+            <Text style={styles.buttonText}>Confirm Tags</Text>
+          </TouchableOpacity>
+  </View>
+</Modal>
+
+<View>
+  {recipe.tags.map((tag, index) => (
+    <Text key={index}>{tag}</Text>
+  ))}
+</View>
+
+<TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 10,
-      backgroundColor: '#fff',
-    },
-    label: {
-      fontWeight: 'bold',
-      fontSize: 16,
-      marginBottom: 5,
-    },
-    input: {
-      borderWidth: 1,
-      borderColor: 'gray',
-      padding: 10,
-      borderRadius: 5,
-      marginBottom: 10,
-      fontSize: 14,
-    },
-    button: {
-      backgroundColor: 'blue',
-      padding: 10,
-      borderRadius: 5, 
-      alignItems: 'center', 
-      marginTop: 10, 
-    },
-    buttonText: {
-      color: '#fff',
-      fontSize: 16, 
-    },
-  });
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#fff',
+  },
+  label: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+    fontSize: 14,
+  },
+  button: {
+    backgroundColor: '#E6E6FA',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  buttonText: {
+    color: '#800080',
+    fontSize: 16,
+  },
+  buttonTextSelected: {
+    color: 'white',
+    fontSize: 16,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+shadowColor: "#000",
+shadowOffset: {
+  width: 0,
+  height: 2
+},
+shadowOpacity: 0.25,
+shadowRadius: 4,
+elevation: 5
+},
+});
   
 
 export default RecipeUploadScreen;
