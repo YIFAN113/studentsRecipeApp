@@ -61,25 +61,46 @@ const RecipeDetailScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 10,
-      backgroundColor: '#fff',
-    },
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#F3E5F5', // 淡紫色背景
+  },
 
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      marginBottom: 10,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#7B1FA2', // 较深的紫色调，增加可读性
+  },
+  section: {
+    marginTop: 10,
+    backgroundColor: '#EDE7F6', // 更淡的紫色用于区块背景
+    padding: 5,
+    borderRadius: 10, // 添加圆角
+    shadowColor: '#000', // 阴影颜色
+    shadowOffset: {
+      width: 0,
+      height: 2,
     },
-    section: {
-      marginTop: 10,
-    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
 
-    text: {
-      fontSize: 16,
-      marginBottom: 5,
-    },
-  });
+  sectionTitle: {
+    fontWeight: 'bold',
+    color: '#6A1B9A', // 紫色调，用于小节标题
+    fontSize: 18,
+    marginBottom: 5,
+  },
+
+  text: {
+    fontSize: 16,
+    color: '#4A148C', // 深紫色文字，保证可读性
+    marginBottom: 5,
+    padding: 5,
+  },
+});
 
 export default RecipeDetailScreen;

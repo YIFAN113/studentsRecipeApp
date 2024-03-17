@@ -6,6 +6,7 @@ import LoginScreen from '../../pages/loginPage';
 import HomeScreen from '../../pages/HomePage';
 import RecipeDetailScreen from '../../pages/recipePage';
 import RecipeUploadScreen from '../../pages/recipeUploadPage'
+import SignUpCsreen from '../../pages/signUpPage'
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,11 @@ function AppNavigator() {
         <Stack.Screen 
           name="recipeUpload" 
           component={RecipeUploadScreen} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="signup" 
+          component={SignUpCsreen} 
           options={{ headerShown: false }} 
         />
       </Stack.Navigator>

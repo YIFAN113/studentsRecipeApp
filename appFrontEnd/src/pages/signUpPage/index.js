@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const RegisterScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const navigation = useNavigation();
   const handleRegisterPress = async () => {
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      Alert.alert("Invalid Password", "Password must contain at least one uppercase letter, one lowercase letter, and one number, and must be at least 8 characters long.");
+      return;
+    }
+
+
     try {
       const response = await fetch('http://10.0.2.2:8080/api/users?action=register', {
         headers: {
@@ -20,6 +30,7 @@ const RegisterScreen = () => {
       if (response.ok) {
         console.log("Registration successful", result);
         Alert.alert("Registration Successful", "You have successfully registered. Please log in.");
+        navigation.navigate('Login')
       } else {
         console.error("Registration failed", result);
         Alert.alert("Registration Failed", result.message || "Please try again.");
