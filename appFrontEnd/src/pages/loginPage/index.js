@@ -55,7 +55,7 @@ const LoginScreen = () => {
         onChangeText={setPassword}
       />
       <Button title="Login" onPress={handleLoginPress} color={'red'} />
-
+      <Button title="Sign Up" onPress={() => navigation.navigate('signup')} color={'blue'} />
     </View>
   );
 };
