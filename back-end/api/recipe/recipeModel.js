@@ -1,5 +1,12 @@
 const mongoose = require('mongoose');
 
+const reviewSchema = new mongoose.Schema({
+    text: { type: String, required: true },
+    postedBy: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now }
+});
+
+
 const recipeSchema = new mongoose.Schema({
     title: {type: String, required: true, index: true},
     Image: {type: String},
@@ -12,7 +19,8 @@ const recipeSchema = new mongoose.Schema({
         quantity: {type: String}
     }],
     cookingSteps: [{type: String, required: true}],
-    author: {type: String}
+    author: {type: String},
+    reviews: [reviewSchema] ,
 }, {timestamps: true});
 
 export default mongoose.model('Recipe', recipeSchema);

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet,  TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const RecipeDetailScreen = ({ route }) => {
   const { id } = route.params;
   const [recipe, setRecipe] = useState(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -56,6 +58,26 @@ const RecipeDetailScreen = ({ route }) => {
         <Text style={styles.sectionTitle}>AUTHOR</Text>
         <Text style={styles.text}>{recipe.author}</Text>
       </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>REVIEWS</Text>
+        {recipe.reviews && recipe.reviews.length > 0 ? (
+          recipe.reviews.map((review, index) => (
+            <View key={index} style={styles.reviewSection}>
+              <Text style={styles.reviewText}>{review.postedBy}: {review.text}</Text>
+              <Text style={styles.reviewDate}>{new Date(review.createdAt).toLocaleString()}</Text>
+
+            </View>
+          ))
+        ) : (
+          <Text style={styles.text}>No reviews yet.</Text>
+        )}
+      </View>
+      <TouchableOpacity 
+        style={styles.uploadButton} 
+        onPress={() => navigation.navigate('review', { recipeId: id })}
+      >
+        <Text style={styles.uploadText}>UPLOAD REVIEW</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -101,6 +123,40 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     padding: 5,
   },
+  reviewSection: {
+    backgroundColor: '#E1BEE7', 
+    padding: 5,
+    borderRadius: 5,
+    marginVertical: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  reviewText: {
+    fontSize: 16,
+    color: '#6A1B9A', 
+    flex: 1,
+  },
+  uploadButton: {
+    padding: 10,
+    backgroundColor: '#7B1FA2',
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  uploadText: {
+
+    color: '#FFFFFF',
+    fontSize: 16,
+  },
+  reviewDate: {
+    color: '#6A1B9A',
+    fontSize: 12,
+    textAlign: 'right',
+    flexShrink: 1,
+  },
+
 });
+
 
 export default RecipeDetailScreen;

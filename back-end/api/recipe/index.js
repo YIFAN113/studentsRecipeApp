@@ -48,6 +48,36 @@ router.post('/', asyncHandler(async (req, res) => {
     res.status(201).json(recipe);
 }));
 
+router.post('/:id/review', asyncHandler(async (req, res) => {
+    const { id } = req.params; 
+    const { text, postedBy } = req.body; 
+
+    if (!text || !postedBy) {
+        return res.status(400).json({ message: 'Review text and postedBy are required' });
+    }
+
+    const recipe = await Recipe.findById(id);
+
+    if (!recipe) {
+        return res.status(404).json({ message: 'Recipe not found' });
+    }
+
+    if (!recipe.reviews) {
+        recipe.reviews = [];
+    }
+
+    const newReview = {
+        text,
+        postedBy,
+        createdAt: new Date() 
+    };
+
+    recipe.reviews.push(newReview);
+
+    await recipe.save();
+
+    res.status(201).json(newReview);
+}));
 
 
 export default router;

@@ -9,6 +9,7 @@ import RecipeUploadScreen from '../../pages/recipeUploadPage'
 import SignUpScreen from '../../pages/signUpPage'
 import MapScreen from '../../pages/mapPage'
 import SearchScreen from '../../pages/searchPage'
+import ReviewUploadScreen from '../../pages/reviewUploadPage'
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
@@ -49,6 +50,11 @@ function AppNavigator() {
 <Stack.Screen 
           name="search" 
           component={SearchScreen} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="review" 
+          component={ReviewUploadScreen} 
           options={{ headerShown: false }} 
         />
       </Stack.Navigator>
