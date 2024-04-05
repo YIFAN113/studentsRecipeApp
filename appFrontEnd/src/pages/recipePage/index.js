@@ -64,21 +64,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#F3E5F5', // 淡紫色背景
+    backgroundColor: '#F3E5F5', 
   },
 
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#7B1FA2', // 较深的紫色调，增加可读性
+    color: '#7B1FA2', 
   },
   section: {
     marginTop: 10,
-    backgroundColor: '#EDE7F6', // 更淡的紫色用于区块背景
+    backgroundColor: '#EDE7F6', 
     padding: 5,
-    borderRadius: 10, // 添加圆角
-    shadowColor: '#000', // 阴影颜色
+    borderRadius: 10, 
+    shadowColor: '#000', 
     shadowOffset: {
       width: 0,
       height: 2,
@@ -90,14 +90,14 @@ const styles = StyleSheet.create({
 
   sectionTitle: {
     fontWeight: 'bold',
-    color: '#6A1B9A', // 紫色调，用于小节标题
+    color: '#6A1B9A', 
     fontSize: 18,
     marginBottom: 5,
   },
 
   text: {
     fontSize: 16,
-    color: '#4A148C', // 深紫色文字，保证可读性
+    color: '#4A148C', 
     marginBottom: 5,
     padding: 5,
   },

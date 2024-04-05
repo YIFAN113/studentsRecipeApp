@@ -3,6 +3,7 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
 const HomeScreen = () => {
   const [recipes, setRecipes] = useState([]);
@@ -37,7 +38,18 @@ const HomeScreen = () => {
 
 
   return (
-    <View style={styles.container}>
+    <MenuProvider style={styles.container}>
+
+<View style={styles.menuContainer}>
+        <Menu onSelect={value => alert(`Selected number: ${value}`)}>
+          <MenuTrigger text='Menu' />
+          <MenuOptions>
+            <MenuOption onSelect={() => navigation.navigate('map')} text='Map' />
+            <MenuOption onSelect={() => navigation.navigate('recipeUpload')} text='Upload' />
+            <MenuOption onSelect={() => navigation.navigate('search')} text='Search' />
+          </MenuOptions>
+        </Menu>
+      </View>
       <FlatList
         data={recipes}
         renderItem={renderItem}
@@ -50,7 +62,7 @@ const HomeScreen = () => {
       >
         <Text style={styles.uploadText}>UPLOAD</Text>
       </TouchableOpacity>
-    </View>
+      </MenuProvider>
   );
 };
 
@@ -80,6 +92,10 @@ const styles = StyleSheet.create({
   uploadText: {
     color: 'white',
     fontSize: 18,
+  },
+  menuContainer: {
+    alignItems: 'flex-end', 
+    padding: 16, 
   },
 });
 

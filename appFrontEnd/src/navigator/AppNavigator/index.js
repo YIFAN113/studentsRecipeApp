@@ -6,8 +6,9 @@ import LoginScreen from '../../pages/loginPage';
 import HomeScreen from '../../pages/HomePage';
 import RecipeDetailScreen from '../../pages/recipePage';
 import RecipeUploadScreen from '../../pages/recipeUploadPage'
-import SignUpCsreen from '../../pages/signUpPage'
-
+import SignUpScreen from '../../pages/signUpPage'
+import MapScreen from '../../pages/mapPage'
+import SearchScreen from '../../pages/searchPage'
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
@@ -36,7 +37,18 @@ function AppNavigator() {
         />
         <Stack.Screen 
           name="signup" 
-          component={SignUpCsreen} 
+          component={SignUpScreen} 
+          options={{ headerShown: false }} 
+        />
+ <Stack.Screen 
+          name="map" 
+          component={MapScreen} 
+          options={{ headerShown: false }} 
+        />
+
+<Stack.Screen 
+          name="search" 
+          component={SearchScreen} 
           options={{ headerShown: false }} 
         />
       </Stack.Navigator>
