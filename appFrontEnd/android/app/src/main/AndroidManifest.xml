@@ -28,5 +28,6 @@
         android:name="com.google.android.geo.API_KEY"
         android:value="AIzaSyCJ7O0QipjvlxLv8GbYgV6JiH5PoKrBcJk"/>
     </application>
+    <uses-permission android:name="android.permission.CAMERA" />
 
 </manifest>

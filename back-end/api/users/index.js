@@ -2,6 +2,7 @@ import express from 'express';
 import User from './userModel';
 import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
+import authenticate from '../../authenticate'
 
 const router = express.Router(); 
 
@@ -39,6 +40,36 @@ router.put('/:id', async (req, res) => {
         res.status(404).json({ code: 404, msg: 'Unable to Update User' });
     }
 });
+
+router.post('/favourites/add/:recipeId', authenticate, asyncHandler(async (req, res) => {
+    const { recipeId } = req.params;
+    const username = req.user.username; 
+  
+    const user = await User.findByUserName(username);
+    if (!user) {
+      return res.status(404).json({ success: false, msg: 'User not found.' });
+    }
+    
+    const result = await user.addToFavourites(recipeId);
+    if (result.added) {
+      res.status(200).json({ success: true, msg: result.message });
+    } else {
+      res.status(200).json({ success: false, msg: result.message });
+    }
+  }));
+
+  router.get('/favourites', authenticate, asyncHandler(async (req, res) => {
+    const user = req.user;
+  
+    try {
+      const populatedUser = await user.populate('favouriteRecipes');
+      res.status(200).json({ success: true, favouriteRecipes: populatedUser.favouriteRecipes });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, msg: 'Internal server error.' });
+    }
+  }));
+
 
 
 async function registerUser(req, res) {

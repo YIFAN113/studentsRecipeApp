@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, StyleSheet,  TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet,  TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -27,6 +27,22 @@ const RecipeDetailScreen = ({ route }) => {
 
     fetchRecipe();
   }, [id]);
+
+  const addToFavorites = async () => {
+    try {
+        const userToken = await AsyncStorage.getItem('userToken');
+        // 注意这里的 URL 已经不再包含用户名，仅传递 recipeId
+        await axios.post(`http://10.0.2.2:8080/api/users/favourites/add/${id}`, {}, {
+            headers: {
+                Authorization: `Bearer ${userToken}`
+            }
+        });
+        Alert.alert("Success", "Recipe added to favorites!");
+    } catch (error) {
+        console.error('Error adding to favorites:', error);
+        Alert.alert("Error", "Failed to add recipe to favorites.");
+    }
+};
 
   if (!recipe) {
     return <Text>Loading...</Text>;
@@ -77,6 +93,12 @@ const RecipeDetailScreen = ({ route }) => {
         onPress={() => navigation.navigate('review', { recipeId: id })}
       >
         <Text style={styles.uploadText}>UPLOAD REVIEW</Text>
+      </TouchableOpacity>
+      <TouchableOpacity 
+        style={styles.uploadButton} 
+        onPress={addToFavorites}
+      >
+        <Text style={styles.uploadText}>ADD TO FAVORITES</Text>
       </TouchableOpacity>
     </ScrollView>
   );

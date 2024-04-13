@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
 const HomeScreen = () => {
   const [recipes, setRecipes] = useState([]);
   const navigation = useNavigation();
 
-  useEffect(() => {
-    fetchRecipes();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchRecipes();
+    }, [])
+  );
 
   const fetchRecipes = async () => {
     try {
@@ -47,6 +49,8 @@ const HomeScreen = () => {
             <MenuOption onSelect={() => navigation.navigate('map')} text='Map' />
             <MenuOption onSelect={() => navigation.navigate('recipeUpload')} text='Upload' />
             <MenuOption onSelect={() => navigation.navigate('search')} text='Search' />
+            
+            <MenuOption onSelect={() => navigation.navigate('favourites')} text='favourites' />
           </MenuOptions>
         </Menu>
       </View>

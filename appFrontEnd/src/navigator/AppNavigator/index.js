@@ -10,6 +10,7 @@ import SignUpScreen from '../../pages/signUpPage'
 import MapScreen from '../../pages/mapPage'
 import SearchScreen from '../../pages/searchPage'
 import ReviewUploadScreen from '../../pages/reviewUploadPage'
+import FavouritesScreen from '../../pages/favouritesPage'
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
@@ -55,6 +56,11 @@ function AppNavigator() {
         <Stack.Screen 
           name="review" 
           component={ReviewUploadScreen} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="favourites" 
+          component={FavouritesScreen} 
           options={{ headerShown: false }} 
         />
       </Stack.Navigator>

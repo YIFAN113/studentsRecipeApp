@@ -17,6 +17,25 @@ userSchema.methods.comparePassword = async function (passw) {
     return this.findOne({ username: username });
   };
 
+  userSchema.methods.addToFavourites = async function (recipeId) {
+    if (!this.favouriteRecipes.includes(recipeId)) {
+      this.favouriteRecipes.push(recipeId);
+      await this.save();
+      return { added: true, message: 'Recipe added to favourites.' };
+    } else {
+      return { added: false, message: 'Recipe already in favourites.' };
+    }
+  };
+
+  userSchema.methods.removeFromFavourites = function (recipeId) {
+    this.favouriteRecipes = this.favouriteRecipes.filter(id => id.toString() !== recipeId.toString());
+    return this.save();
+  };
+
+  userSchema.methods.getFavourites = function() {
+    return this.populate('favouriteRecipes');
+  };
+
   userSchema.pre('save', async function(next) {
     const saltRounds = 10; 
     if (this.isModified('password') || this.isNew) {

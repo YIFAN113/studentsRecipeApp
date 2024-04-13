@@ -1,8 +1,13 @@
 import express from 'express';
 import Recipe from './recipeModel'
 import asyncHandler from 'express-async-handler';
+const multer = require('multer');
+import { GridFsStorage } from 'multer-gridfs-storage';
 //import { v4 as uuidv4 } from 'uuid';
 const router = express.Router(); 
+
+
+
 
 router.get('/', async (req, res) => {
     const recipes = await Recipe.find();
@@ -35,6 +40,7 @@ router.get('/search', asyncHandler(async (req, res) => {
 }));
 
 router.get('/:id', asyncHandler(async (req, res) => {
+    console.log('Request hit / endpoint');
     const recipe = await Recipe.findById(req.params.id);
     if (recipe) {
         res.status(200).json(recipe);
