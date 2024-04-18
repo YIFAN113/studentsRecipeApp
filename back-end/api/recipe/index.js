@@ -15,29 +15,39 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/search', asyncHandler(async (req, res) => {
-    const { query, tags } = req.query; 
+    const { query, cookingMethod, cookingTime, cost, category, suitableFor } = req.query;
 
     let searchConditions = [];
     if (query) {
-        const searchCondition = new RegExp(query, 'i'); 
-        searchConditions.push({ name: searchCondition });
+        searchConditions.push({ title: new RegExp(query, 'i') }); 
     }
 
-    if (tags) {
-        const tagsArray = tags.split(',').map(tag => tag.trim());
-        searchConditions.push({ tags: { $all: tagsArray } });
+    const tagsFields = { cookingMethod, cookingTime, cost, category, suitableFor };
+    for (const [key, value] of Object.entries(tagsFields)) {
+        if (value) {
+            const tagsArray = value.split(',').map(tag => tag.trim());
+            searchConditions.push({ [`tags.${key}`]: { $in: tagsArray } });
+        }
     }
 
     if (searchConditions.length === 0) {
         return res.status(400).json({ message: 'Search query or tags is required' });
     }
 
-    const recipes = await Recipe.find({
-        $and: searchConditions
-    });
-
+    const recipes = await Recipe.find({ $and: searchConditions });
     res.status(200).json(recipes);
 }));
+
+router.get('/test-query', async (req, res) => {
+    try {
+        const recipes = await Recipe.find({ 'cookingMethod': { $in: ['Grill'] } });
+        console.log("Found recipes:", recipes);
+        res.json(recipes); 
+    } catch (error) {
+        console.error("Error fetching recipes:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
 
 router.get('/:id', asyncHandler(async (req, res) => {
     console.log('Request hit / endpoint');

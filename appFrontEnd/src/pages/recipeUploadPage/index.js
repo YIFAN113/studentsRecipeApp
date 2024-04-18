@@ -10,14 +10,33 @@ const RecipeUploadScreen = () => {
     types: [],
     tools: [],
     location: '',
-    tags: [],
+    tags: {
+      cookingMethod: [],
+      cookingTime: [],
+      cost: [],
+      category: [],
+      suitableFor: []
+  },
     ingredients: [{ name: '', quantity: '' }],
     cookingSteps: []
   });
 
+  
   const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedTags, setSelectedTags] = useState([]);
-  const tags = ["beef", "chicken", "pork", "lamb", "fry"];
+  const [selectedTags, setSelectedTags] = useState({
+    cookingMethod: [],
+    cookingTime: [],
+    cost: [],
+    category: [],
+    suitableFor: []
+});
+const tagCategories = {
+  cookingMethod: ["Grill", "Bake", "Fry", "Steam"],
+  cookingTime: ["Under30min", "1hour", "2hours"],
+  cost: ["2", "5", "7","10","15","20"],
+  category: ["Vegetarian", "Non-Vegetarian", "Vegan"],
+  suitableFor: ["Kids", "Diabetics", "WeightLoss"]
+};
 
   useEffect(() => {
     const fetchUsername = async () => {
@@ -29,15 +48,12 @@ const RecipeUploadScreen = () => {
     fetchUsername();
   }, []);
 
-  const handleSelectTag = (tag) => {
-    setSelectedTags(prevTags => {
-      if (prevTags.includes(tag)) {
-        return prevTags.filter(t => t !== tag);
-      } else {
-        return [...prevTags, tag];
-      }
-    });
-  };
+  const handleSelectTag = (category, tag) => {
+    setSelectedTags(prevTags => ({
+        ...prevTags,
+        [category]: prevTags[category].includes(tag) ? prevTags[category].filter(t => t !== tag) : [...prevTags[category], tag]
+    }));
+};
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -103,7 +119,13 @@ const RecipeUploadScreen = () => {
         types: [],
         tools: [],
         location: '',
-        tags: [],
+        tags: {
+          cookingMethod: [],
+          cookingTime: [],
+          cost: [],
+          category: [],
+          suitableFor: []
+      },
         ingredients: [{ name: '', quantity: '' }],
         cookingSteps: ['']
       });
@@ -161,37 +183,55 @@ const RecipeUploadScreen = () => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={styles.button}
-        onPress={toggleModal}
-        activeOpacity={0.8} 
-      >
-        <Text style={styles.buttonText}>Add Tag</Text>
-      </TouchableOpacity>
+                style={styles.button}
+                onPress={toggleModal}
+                activeOpacity={0.8}
+            >
+                <Text style={styles.buttonText}>Add Tags</Text>
+            </TouchableOpacity>
 
-<Modal
-  animationType="slide"
-  transparent={true}
-  visible={isModalVisible}
-  onRequestClose={toggleModal}
->
-  <View style={styles.modalView}>
-    {tags.map((tag, index) => (
-      <Button 
-        key={index} 
-        title={tag} 
-        onPress={() => handleSelectTag(tag)} 
-        color={selectedTags.includes(tag) ? 'blue' : 'gray'}
-      />
-    ))}
-    <TouchableOpacity style={styles.button} onPress={addTagsToRecipe}>
-            <Text style={styles.buttonText}>Confirm Tags</Text>
-          </TouchableOpacity>
-  </View>
-</Modal>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={isModalVisible}
+                onRequestClose={toggleModal}
+            >
+                <View style={styles.modalView}>
+                <ScrollView>
+                    {Object.keys(tagCategories).map((category) => (
+                        <View key={category}>
+                            <Text style={styles.label}>{category.replace(/([A-Z])/g, ' $1').trim()}:</Text>
+                            {tagCategories[category].map((tag) => (
+                                <Button
+                                    key={tag}
+                                    title={tag}
+                                    onPress={() => handleSelectTag(category, tag)}
+                                    color={selectedTags[category].includes(tag) ? 'blue' : 'gray'}
+                                />
+                            ))}
+                            
+                        </View>
 
-<View>
-  {recipe.tags.map((tag, index) => (
-    <Text key={index}>{tag}</Text>
+                    ))}
+                     </ScrollView>
+                    <TouchableOpacity style={styles.button} onPress={addTagsToRecipe}>
+                        <Text style={styles.buttonText}>Confirm Tags</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+
+<View style={styles.tagsContainer}>
+  {Object.keys(recipe.tags).map((category) => (
+    <View key={category} style={styles.tagCategory}>
+      <Text style={styles.tagCategoryTitle}>{category.replace(/([A-Z])/g, ' $1').trim()}:</Text>
+      <View style={styles.tagList}>
+        {recipe.tags[category].map((tag, index) => (
+          <View key={index} style={styles.tagChip}>
+            <Text style={styles.tagText}>{tag}</Text>
+          </View>
+        ))}
+      </View>
+    </View>
   ))}
 </View>
 
@@ -250,6 +290,32 @@ shadowOffset: {
 shadowOpacity: 0.25,
 shadowRadius: 4,
 elevation: 5
+},
+tagsContainer: {
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  alignItems: 'flex-start',
+  marginBottom: 10,
+},
+tagCategory: {
+  flexDirection: 'column',
+  marginRight: 10,
+},
+tagList: {
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  marginTop: 5,
+},
+tagChip: {
+  backgroundColor: '#E1BEE7',
+  borderRadius: 20,
+  paddingVertical: 5,
+  paddingHorizontal: 10,
+  margin: 2,
+},
+tagText: {
+  fontSize: 14,
+  color: '#4A148C',
 },
 });
   

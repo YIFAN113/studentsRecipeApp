@@ -1,75 +1,107 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal,Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dimensions } from 'react-native';
 const screenWidth = Dimensions.get('window').width;
 const RecipeSearchScreen = () => {
-    const [selectedTags, setSelectedTags] = useState([]);
+    const [selectedTags, setSelectedTags] = useState({
+        cookingMethod: [],
+        cookingTime: [],
+        cost: [],
+        category: [],
+        suitableFor: []
+      });
     const [recipes, setRecipes] = useState([]);
     const navigation = useNavigation();
-    const tags = ["beef", "chicken", "pork", "lamb", "fry"];
+    const [isModalVisible, setModalVisible] = useState(false);
+    const tagCategories = {
+        cookingMethod: ["Grill", "Bake", "Fry", "Steam"],
+        cookingTime: ["Under30min", "1hour", "2hours"],
+        cost: ["2", "5", "7","10","15","20"],
+        category: ["Vegetarian", "Non-Vegetarian", "Vegan"],
+        suitableFor: ["Kids", "Diabetics", "WeightLoss"]
+      };
+      const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+      };
 
-    const handleSelectTag = (tag) => {
-        setSelectedTags(prevSelectedTags => {
-            if (prevSelectedTags.includes(tag)) {
-                return prevSelectedTags.filter(t => t !== tag); 
-            } else {
-                return [...prevSelectedTags, tag]; 
-            }
-        });
-    };
+      const handleSelectTag = (category, tag) => {
+        setSelectedTags(prevTags => ({
+            ...prevTags,
+            [category]: prevTags[category].includes(tag) ? prevTags[category].filter(t => t !== tag) : [...prevTags[category], tag]
+        }));
+      };
 
-    const handleSearch = async () => {
+      const handleSearch = async () => {
         try {
-            const userToken = await AsyncStorage.getItem('userToken');
-            
-
-            if (!userToken) {
-                console.error('Authentication token is not available');
-                return;
+          const userToken = await AsyncStorage.getItem('userToken');
+          if (!userToken) {
+            console.error('Authentication token is not available');
+            return;
+          }
+      
+          let url = 'http://10.0.2.2:8080/api/recipe/search?';
+          Object.keys(selectedTags).forEach(category => {
+            if (selectedTags[category].length > 0) {
+              url += `${category}=${encodeURIComponent(selectedTags[category].join(','))}&`;
             }
-    
-            let url = `http://10.0.2.2:8080/api/recipe/search?`;
-            if (selectedTags.length > 0) {
-                url += `tags=${encodeURIComponent(selectedTags.join(','))}`;
-            }
-    
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${userToken}`, 
-                },
-            });
-    
-            const responseData = await response.json();
-    
-            if (!response.ok) {
-                throw new Error(responseData.message || 'Something went wrong while fetching recipes!');
-            }
-    
-            setRecipes(responseData);
+          });
+          console.log("Final URL:", url);
+          const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${userToken}`,
+            },
+          });
+      
+          const responseData = await response.json();
+          if (!response.ok) {
+            throw new Error(responseData.message || 'Something went wrong while fetching recipes!');
+          }
+      
+          setRecipes(responseData);
         } catch (error) {
-            console.error('Failed to fetch recipes:', error);
-            setRecipes([]);
+          console.error('Failed to fetch recipes:', error);
+          setRecipes([]);
         }
-    };
-
+      };
 
     return (
         <View style={styles.container}>
-            <ScrollView horizontal={false} contentContainerStyle={styles.tagContainer}>
-                {tags.map((tag, index) => (
-                    <TouchableOpacity
-                        key={index}
-                        style={[styles.tag, selectedTags.includes(tag) ? styles.tagSelected : {}]}
-                        onPress={() => handleSelectTag(tag)}
-                    >
-                        <Text style={styles.tagText}>{tag}</Text>
-                    </TouchableOpacity>
-                ))}
-            </ScrollView>
+ <TouchableOpacity
+  style={styles.button}
+  onPress={() => setModalVisible(true)}
+>
+  <Text style={styles.buttonText}>Select Tags</Text>
+</TouchableOpacity>
+
+<Modal
+  animationType="slide"
+  transparent={true}
+  visible={isModalVisible}
+  onRequestClose={toggleModal}
+>
+  <View style={styles.modalView}>
+    {Object.keys(tagCategories).map(category => (
+      <View key={category}>
+        <Text style={styles.label}>{category}:</Text>
+        {tagCategories[category].map(tag => (
+          <Button
+            key={tag}
+            title={tag}
+            onPress={() => handleSelectTag(category, tag)}
+            color={selectedTags[category].includes(tag) ? 'blue' : 'gray'}
+          />
+        ))}
+      </View>
+    ))}
+    <TouchableOpacity style={styles.button} onPress={() => setModalVisible(false)}>
+      <Text style={styles.buttonText}>Close</Text>
+    </TouchableOpacity>
+  </View>
+</Modal>
             <TouchableOpacity style={styles.button} onPress={handleSearch}>
                 <Text style={styles.buttonText}>Search</Text>
             </TouchableOpacity>

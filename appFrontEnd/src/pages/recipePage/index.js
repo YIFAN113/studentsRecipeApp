@@ -58,11 +58,20 @@ const RecipeDetailScreen = ({ route }) => {
         ))}
       </View>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>TAGS</Text>
-        {recipe.tags.map((step, index) => (
-          <Text key={index} style={styles.text}>{index + 1}. {step}</Text>
+  <Text style={styles.sectionTitle}>TAGS</Text>
+  {Object.keys(recipe.tags).map((category) => (
+    <View key={category}>
+      <Text style={styles.tagCategoryTitle}>{category.replace(/([A-Z])/g, ' $1').trim()}:</Text>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.tagContainer}>
+        {recipe.tags[category].map((tag, index) => (
+          <View key={index} style={styles.tagChip}>
+            <Text style={styles.tagText}>{tag}</Text>
+          </View>
         ))}
-      </View>
+      </ScrollView>
+    </View>
+  ))}
+</View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>COOKING STEPS</Text>
@@ -177,6 +186,29 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     flexShrink: 1,
   },
+  tagCategoryTitle: {
+    fontWeight: 'bold',
+    color: '#6A1B9A',
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  tagContainer: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  tagChip: {
+    backgroundColor: '#E1BEE7',  // 浅紫色背景
+    borderRadius: 15,            // 圆角
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginHorizontal: 5,         // 芯片之间的间隔
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tagText: {
+    color: '#4A148C',            // 深紫色文本
+    fontSize: 14,
+  }
 
 });
 

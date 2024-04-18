@@ -5,7 +5,8 @@ import recipeRouter from './api/recipe';
 import usersRouter from './api/users';
 import './db';
 import authenticate from './authenticate';
-import mapRotes from './api/map'
+import mapRotes from './api/map';
+const { listBuckets } = require('./googleStorage');
 
 dotenv.config();
 
@@ -30,4 +31,5 @@ app.use(errHandler);
 
 app.listen(port, () => {
   console.info(`Server running at ${port}`);
+  listBuckets();
 });
