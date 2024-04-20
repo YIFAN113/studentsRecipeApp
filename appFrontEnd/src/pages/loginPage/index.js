@@ -25,8 +25,10 @@ const LoginScreen = () => {
       if (response.ok && result.success) {
         console.log("Login successful", result);
         const token = result.token.split(' ')[1];
+        const userId = result.userId;
         await AsyncStorage.setItem('userToken', token); 
         await AsyncStorage.setItem('username', username);
+        await AsyncStorage.setItem('userId', userId);
         navigation.navigate('Home');
       } else {
         console.error("Login failed", result);

@@ -49,7 +49,7 @@ const HomeScreen = () => {
             <MenuOption onSelect={() => navigation.navigate('map')} text='Map' />
             <MenuOption onSelect={() => navigation.navigate('recipeUpload')} text='Upload' />
             <MenuOption onSelect={() => navigation.navigate('search')} text='Search' />
-            
+            <MenuOption onSelect={() => navigation.navigate('UserProfile')} text='Edit Profile' /> 
             <MenuOption onSelect={() => navigation.navigate('favourites')} text='favourites' />
           </MenuOptions>
         </Menu>

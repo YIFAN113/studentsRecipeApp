@@ -11,6 +11,7 @@ import MapScreen from '../../pages/mapPage'
 import SearchScreen from '../../pages/searchPage'
 import ReviewUploadScreen from '../../pages/reviewUploadPage'
 import FavouritesScreen from '../../pages/favouritesPage'
+import UserProfileScreen from '../../pages/profileChangePage'
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
@@ -63,6 +64,12 @@ function AppNavigator() {
           component={FavouritesScreen} 
           options={{ headerShown: false }} 
         />
+        <Stack.Screen 
+          name="UserProfile" 
+          component={UserProfileScreen} 
+          options={{ headerShown: false }} 
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
