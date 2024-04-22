@@ -7,6 +7,8 @@ const UserProfileScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [userId, setUserId] = useState(null);
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
 
   useEffect(() => {
 
@@ -25,10 +27,15 @@ const UserProfileScreen = ({ navigation }) => {
 
     getUserInfo();
   }, []);
+  
 
   const updateProfile = async () => {
     if (!username && !password) {
       Alert.alert('Error', 'Please enter username or password to update.');
+      return;
+    }
+    if (!passwordRegex.test(password)) {
+      Alert.alert("Invalid Password", "Password must contain at least one uppercase letter, one lowercase letter, and one number, and must be at least 8 characters long.");
       return;
     }
     try {
@@ -77,7 +84,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff'
+    backgroundColor: '#F3E5F5', 
   },
   label: {
     fontSize: 16,
@@ -91,7 +98,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   button: {
-    backgroundColor: '#0066cc',
+    backgroundColor: 'purple',
     padding: 10,
     alignItems: 'center'
   },

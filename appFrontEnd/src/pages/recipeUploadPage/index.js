@@ -206,7 +206,7 @@ const tagCategories = {
                                     key={tag}
                                     title={tag}
                                     onPress={() => handleSelectTag(category, tag)}
-                                    color={selectedTags[category].includes(tag) ? 'blue' : 'gray'}
+                                    color={selectedTags[category].includes(tag) ? 'purple' : 'gray'}
                                 />
                             ))}
                             
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '#F3E5F5', 
   },
   label: {
     fontWeight: 'bold',

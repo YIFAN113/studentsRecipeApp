@@ -57,7 +57,7 @@ const RegisterScreen = () => {
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Register" onPress={handleRegisterPress} color={'red'} />
+      <Button title="Register" onPress={handleRegisterPress} color={'purple'} />
     </View>
   );
 };
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
+    backgroundColor: '#F3E5F5', 
   },
   input: {
     height: 40,
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'center',
-    color: "red",
+    color: "purple",
     marginBottom: 20,
   },
 });

@@ -42,6 +42,7 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Students' spoon</Text>
     <Text style={styles.Text}>Welcome</Text>
       <TextInput
         style={styles.input}
@@ -56,8 +57,8 @@ const LoginScreen = () => {
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Login" onPress={handleLoginPress} color={'red'} />
-      <Button title="Sign Up" onPress={() => navigation.navigate('signup')} color={'blue'} />
+      <Button title="Login" onPress={handleLoginPress} color={'purple'} />
+      <Button title="Sign Up" onPress={() => navigation.navigate('signup')} color={'purple'} />
     </View>
   );
 };
@@ -67,6 +68,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
+    backgroundColor: '#F3E5F5', 
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'purple',
+    textAlign: 'center',
+    marginBottom: 20, 
   },
   input: {
     height: 40,
@@ -76,7 +85,7 @@ const styles = StyleSheet.create({
   },
   Text:{
     textAlign: 'center',
-    color:"red"
+    color:"purple"
   }
 });
 

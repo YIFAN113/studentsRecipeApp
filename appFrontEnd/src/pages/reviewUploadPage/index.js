@@ -56,7 +56,7 @@ const ReviewUploadScreen = ({ route }) => {
         multiline={true}
         numberOfLines={4}
       />
-      <Button title="Submit Review" onPress={handleSubmit} />
+      <Button title="Submit Review" onPress={handleSubmit} color={'purple'} />
     </ScrollView>
   );
 };
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#F3E5F5', 
   },
   label: {
     fontWeight: 'bold',

@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
+        backgroundColor: '#F3E5F5', 
     },
     tagContainer: {
         flexDirection: 'row', 
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     button: {
-        backgroundColor: '#007bff',
+      backgroundColor: 'purple', 
         padding: 10,
         borderRadius: 5,
         alignItems: 'center',

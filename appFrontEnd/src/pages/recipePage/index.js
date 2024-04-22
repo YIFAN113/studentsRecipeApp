@@ -31,7 +31,6 @@ const RecipeDetailScreen = ({ route }) => {
   const addToFavorites = async () => {
     try {
         const userToken = await AsyncStorage.getItem('userToken');
-        // 注意这里的 URL 已经不再包含用户名，仅传递 recipeId
         await axios.post(`http://10.0.2.2:8080/api/users/favourites/add/${id}`, {}, {
             headers: {
                 Authorization: `Bearer ${userToken}`
@@ -107,7 +106,7 @@ const RecipeDetailScreen = ({ route }) => {
         style={styles.uploadButton} 
         onPress={addToFavorites}
       >
-        <Text style={styles.uploadText}>ADD TO FAVORITES</Text>
+        <Text style={styles.uploadText}>ADD TO FAVOURITES</Text>
       </TouchableOpacity>
     </ScrollView>
   );

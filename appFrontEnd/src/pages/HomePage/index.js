@@ -54,6 +54,7 @@ const HomeScreen = () => {
           </MenuOptions>
         </Menu>
       </View>
+      <Text style={styles.title}>Find recipes you love</Text>
       <FlatList
         data={recipes}
         renderItem={renderItem}
@@ -73,7 +74,8 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22
+    paddingTop: 22,
+    backgroundColor: '#F3E5F5', 
   },
   item: {
     backgroundColor: '#f9c2ff',
@@ -85,12 +87,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
+    fontWeight: 'bold',
+    color: 'purple',
+    textAlign: 'center',
+    marginBottom: 20, 
   },
   uploadButton: {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
-    backgroundColor: '#007bff',
+    backgroundColor: 'purple',
     margin: 10,
   },
   uploadText: {
