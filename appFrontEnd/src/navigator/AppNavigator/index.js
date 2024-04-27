@@ -12,6 +12,7 @@ import SearchScreen from '../../pages/searchPage'
 import ReviewUploadScreen from '../../pages/reviewUploadPage'
 import FavouritesScreen from '../../pages/favouritesPage'
 import UserProfileScreen from '../../pages/profileChangePage'
+import RecipeImageUploadScreen from '../../pages/recipeImageUploadPage'
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
@@ -67,6 +68,11 @@ function AppNavigator() {
         <Stack.Screen 
           name="UserProfile" 
           component={UserProfileScreen} 
+          options={{ headerShown: false }} 
+        />
+         <Stack.Screen 
+          name="Upload" 
+          component={RecipeImageUploadScreen} 
           options={{ headerShown: false }} 
         />
 

@@ -2,7 +2,7 @@ import express from 'express';
 import Recipe from './recipeModel'
 import asyncHandler from 'express-async-handler';
 const multer = require('multer');
-import { GridFsStorage } from 'multer-gridfs-storage';
+const { ensureUpload } = require('../../db/middleware');
 //import { v4 as uuidv4 } from 'uuid';
 const router = express.Router(); 
 
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/search', asyncHandler(async (req, res) => {
-    const { query, cookingMethod, cookingTime, cost, category, suitableFor } = req.query;
+    const { query, cookingMethod, cookingTime, cost, category, suitableFor, budget } = req.query;
 
     let searchConditions = [];
     if (query) {
@@ -28,6 +28,10 @@ router.get('/search', asyncHandler(async (req, res) => {
             const tagsArray = value.split(',').map(tag => tag.trim());
             searchConditions.push({ [`tags.${key}`]: { $in: tagsArray } });
         }
+    }
+
+    if (budget) {
+        searchConditions.push({ budget: { $lte: Number(budget) } });
     }
 
     if (searchConditions.length === 0) {
@@ -58,6 +62,21 @@ router.get('/:id', asyncHandler(async (req, res) => {
         res.status(404).json({ message: 'Recipe not found' });
     }
 }));
+
+router.post('/upload', ensureUpload, (req, res) => {
+    req.upload.single('Image')(req, res, function (err) {
+        if (err) {
+            return res.status(500).json({ message: err.message });
+        }
+        if (!req.file) {
+            return res.status(400).send('No file uploaded');
+        }
+        res.status(201).json({
+            fileId: req.file.id,
+            filename: req.file.filename
+        });
+    });
+});
 
 router.post('/', asyncHandler(async (req, res) => {
     const recipe = await Recipe(req.body).save();

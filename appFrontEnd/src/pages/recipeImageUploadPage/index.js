@@ -1,14 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, ScrollView, Alert, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, ScrollView, Alert, StyleSheet, Modal, TouchableOpacity,Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-const RecipeUploadScreen = () => {
+import { launchImageLibrary } from 'react-native-image-picker';
+
+
+
+const RecipeImageUploadScreen = () => {
+
+    const selectImage = () => {
+        const options = {
+          mediaType: 'photo',
+          quality: 1,
+        };
+      
+        launchImageLibrary(options)
+        .then((response) => {
+          if (response.didCancel) {
+            console.log('User cancelled image picker');
+          } else if (response.errorCode) {
+            console.log('ImagePicker Error: ', response.errorMessage);
+          } else if (response.assets && response.assets.length > 0) {
+            uploadImageToServer(response.assets[0].uri);
+          }
+        })
+        .catch((error) => {
+          console.log('ImagePicker Error: ', error);
+          Alert.alert('Error', 'Failed to pick an image');
+        });
+    };
     const navigation = useNavigation();
   const [recipe, setRecipe] = useState({
     title: '',
     Image: null,
     types: [],
-    budget: '',
     tools: [],
     location: '',
     tags: {
@@ -94,6 +119,34 @@ const tagCategories = {
       cookingSteps: [...recipe.cookingSteps, '']
     });
   };
+  const uploadImageToServer = async (imageUri) => {
+    const userToken = await AsyncStorage.getItem('userToken');
+    const formData = new FormData();
+    formData.append('Image', {
+      uri: imageUri,
+      type: 'image/jpeg', 
+      name: 'recipe-image.jpg',
+    });
+
+    try {
+      const response = await fetch('http://10.0.2.2:8080/api/recipe/upload', { 
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${userToken}`
+        },
+        body: formData,
+      });
+
+      const responseData = await response.json();
+      if (!response.ok) {
+        throw new Error(responseData.message || 'Something went wrong!');
+      }
+      setRecipe({ ...recipe, Image: responseData.fileId });
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Failed to upload the image');
+    }
+  };
 
   const handleSubmit = async () => {
     const userToken = await AsyncStorage.getItem('userToken');
@@ -118,7 +171,6 @@ const tagCategories = {
       setRecipe({
         title: '',
         types: [],
-        budget: '',
         tools: [],
         location: '',
         tags: {
@@ -146,7 +198,15 @@ const tagCategories = {
         value={recipe.title}
         onChangeText={(value) => handleChange('title', value)}
       />
+<TouchableOpacity style={styles.button} onPress={selectImage}>
+        <Text style={styles.buttonText}>Select Image</Text>
+      </TouchableOpacity>
 
+      {recipe.Image && (
+        <View>
+          <Image source={{ uri: recipe.Image.uri }} style={{ width: 200, height: 200 }} />
+        </View>
+      )}
 
       {recipe.ingredients.map((ingredient, index) => (
         <View key={index}>
@@ -236,14 +296,6 @@ const tagCategories = {
     </View>
   ))}
 </View>
-<Text style={styles.label}>Budget:</Text>
-<TextInput
-  style={styles.input}
-  value={recipe.budget}
-  onChangeText={(value) => handleChange('budget', value)}
-  keyboardType="numeric"
-  placeholder="Enter budget"
-/>
 
 <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
@@ -330,4 +382,4 @@ tagText: {
 });
   
 
-export default RecipeUploadScreen;
+export default RecipeImageUploadScreen;

@@ -34,7 +34,7 @@ const UserProfileScreen = ({ navigation }) => {
       Alert.alert('Error', 'Please enter username or password to update.');
       return;
     }
-    if (!passwordRegex.test(password)) {
+    if (password && !passwordRegex.test(password)) {
       Alert.alert("Invalid Password", "Password must contain at least one uppercase letter, one lowercase letter, and one number, and must be at least 8 characters long.");
       return;
     }

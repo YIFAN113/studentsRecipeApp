@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal,Button } from 'react-native';
+import { View, Text,TextInput, FlatList, TouchableOpacity, StyleSheet, Modal,Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dimensions } from 'react-native';
@@ -14,6 +14,7 @@ const RecipeSearchScreen = () => {
       });
     const [recipes, setRecipes] = useState([]);
     const navigation = useNavigation();
+    const [budget, setBudget] = useState('');
     const [isModalVisible, setModalVisible] = useState(false);
     const tagCategories = {
         cookingMethod: ["Grill", "Bake", "Fry", "Steam"],
@@ -47,6 +48,9 @@ const RecipeSearchScreen = () => {
               url += `${category}=${encodeURIComponent(selectedTags[category].join(','))}&`;
             }
           });
+          if (budget) {
+            url += `budget=${encodeURIComponent(budget)}&`;
+        }
           console.log("Final URL:", url);
           const response = await fetch(url, {
             method: 'GET',
@@ -97,11 +101,20 @@ const RecipeSearchScreen = () => {
         ))}
       </View>
     ))}
+    
     <TouchableOpacity style={styles.button} onPress={() => setModalVisible(false)}>
       <Text style={styles.buttonText}>Close</Text>
     </TouchableOpacity>
   </View>
 </Modal>
+<Text style={styles.label}>Set Budget:</Text>
+<TextInput
+                style={styles.input}
+                onChangeText={setBudget}
+                value={budget}
+                placeholder="Enter your budget"
+                keyboardType="numeric"
+            />
             <TouchableOpacity style={styles.button} onPress={handleSearch}>
                 <Text style={styles.buttonText}>Search</Text>
             </TouchableOpacity>
@@ -124,6 +137,17 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#F3E5F5', 
     },
+    input: {
+      height: 40,
+      margin: 12,
+      borderWidth: 1,
+      padding: 10,
+  },
+  label: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginBottom: 5,
+  },
     tagContainer: {
         flexDirection: 'row', 
         flexWrap: 'wrap', 

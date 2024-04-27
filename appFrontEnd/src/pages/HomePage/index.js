@@ -51,6 +51,7 @@ const HomeScreen = () => {
             <MenuOption onSelect={() => navigation.navigate('search')} text='Search' />
             <MenuOption onSelect={() => navigation.navigate('UserProfile')} text='Edit Profile' /> 
             <MenuOption onSelect={() => navigation.navigate('favourites')} text='favourites' />
+            <MenuOption onSelect={() => navigation.navigate('Upload')} text='uploadImage' />
           </MenuOptions>
         </Menu>
       </View>
