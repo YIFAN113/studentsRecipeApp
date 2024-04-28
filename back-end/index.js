@@ -6,6 +6,7 @@ import usersRouter from './api/users';
 import './db';
 import authenticate from './authenticate';
 import mapRotes from './api/map';
+import cookingLearningRouter from './api/cookingLearning'
 //const { listBuckets } = require('./googleStorage');
 
 dotenv.config();
@@ -27,6 +28,7 @@ app.use(express.json());
 app.use('/api/recipe',authenticate, recipeRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/map', mapRotes);
+app.use('/api/cookingLearning', cookingLearningRouter)
 app.use(errHandler);
 
 app.listen(port, () => {

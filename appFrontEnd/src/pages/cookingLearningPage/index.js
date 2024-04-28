@@ -5,34 +5,34 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
-const HomeScreen = () => {
-  const [recipes, setRecipes] = useState([]);
+const CookingLearningScreen = () => {
+  const [cookingLearnings, setCookingLearnings] = useState([]);
   const navigation = useNavigation();
 
   useFocusEffect(
     useCallback(() => {
-      fetchRecipes();
+      fetchCookingLearnings();
     }, [])
   );
 
-  const fetchRecipes = async () => {
+  const fetchCookingLearnings = async () => {
     try {
 
       const userToken = await AsyncStorage.getItem('userToken');
       
-      const response = await axios.get('http://10.0.2.2:8080/api/recipe', {
+      const response = await axios.get('http://10.0.2.2:8080/api/cookingLearning', {
         headers: {
           Authorization: `Bearer ${userToken}` 
         }
       });
-      setRecipes(response.data);
+      setCookingLearnings(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('recipe', { id: item._id })}>
+    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('cookingLearningDetails', { id: item._id })}>
       <Text style={styles.title}>{item.title}</Text>
     </TouchableOpacity>
   );
@@ -40,36 +40,17 @@ const HomeScreen = () => {
 
 
   return (
-    <MenuProvider style={styles.container}>
+    <View style={styles.container}>
 
-<View style={styles.menuContainer}>
-        <Menu onSelect={value => alert(`Selected number: ${value}`)}>
-          <MenuTrigger text='Menu' />
-          <MenuOptions>
-            <MenuOption onSelect={() => navigation.navigate('map')} text='Map' />
-            <MenuOption onSelect={() => navigation.navigate('recipeUpload')} text='Upload' />
-            <MenuOption onSelect={() => navigation.navigate('search')} text='Search' />
-            <MenuOption onSelect={() => navigation.navigate('UserProfile')} text='Edit Profile' /> 
-            <MenuOption onSelect={() => navigation.navigate('favourites')} text='favourites' />
-
-            <MenuOption onSelect={() => navigation.navigate('cookingLearning')} text='cookingLearning' />
-          </MenuOptions>
-        </Menu>
-      </View>
-      <Text style={styles.title}>Find recipes you love</Text>
+      <Text style={styles.title}>Don't afraid, just try</Text>
       <FlatList
-        data={recipes}
+        data={cookingLearnings}
         renderItem={renderItem}
         keyExtractor={item => item._id}
         numColumns={2}
       />
-      <TouchableOpacity 
-        style={styles.uploadButton} 
-        onPress={() => navigation.navigate('recipeUpload')}
-      >
-        <Text style={styles.uploadText}>UPLOAD</Text>
-      </TouchableOpacity>
-      </MenuProvider>
+      
+      </View>
   );
 };
 
@@ -111,4 +92,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default CookingLearningScreen;

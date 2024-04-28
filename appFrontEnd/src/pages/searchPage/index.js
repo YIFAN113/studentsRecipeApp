@@ -33,6 +33,11 @@ const RecipeSearchScreen = () => {
             [category]: prevTags[category].includes(tag) ? prevTags[category].filter(t => t !== tag) : [...prevTags[category], tag]
         }));
       };
+      const renderItem = ({ item }) => (
+        <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('recipe', { id: item._id })}>
+          <Text style={styles.title}>{item.title}</Text>
+        </TouchableOpacity>
+      );
 
       const handleSearch = async () => {
         try {
@@ -119,14 +124,11 @@ const RecipeSearchScreen = () => {
                 <Text style={styles.buttonText}>Search</Text>
             </TouchableOpacity>
             <FlatList
-                data={recipes}
-                renderItem={({ item }) => (
-                    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('recipe', { id: item._id })}>
-      <Text style={styles.title}>{item.title}</Text>
-    </TouchableOpacity>
-                )}
-                keyExtractor={item => item._id.toString()}
-            />
+        data={recipes}
+        renderItem={renderItem}
+        keyExtractor={item => item._id}
+        numColumns={2}
+      />
         </View>
     );
 };
@@ -142,6 +144,21 @@ const styles = StyleSheet.create({
       margin: 12,
       borderWidth: 1,
       padding: 10,
+  },
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    alignItems: 'center', 
+    flex: 1,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'purple',
+    textAlign: 'center',
+    marginBottom: 20, 
   },
   label: {
     fontWeight: 'bold',

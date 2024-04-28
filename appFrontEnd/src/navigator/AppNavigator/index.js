@@ -13,6 +13,8 @@ import ReviewUploadScreen from '../../pages/reviewUploadPage'
 import FavouritesScreen from '../../pages/favouritesPage'
 import UserProfileScreen from '../../pages/profileChangePage'
 import RecipeImageUploadScreen from '../../pages/recipeImageUploadPage'
+import CookingLearningScreen from '../../pages/cookingLearningPage'
+import CookingLearningDetailsScreen from '../../pages/cookingLearningDetailsPage'
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
@@ -73,6 +75,16 @@ function AppNavigator() {
          <Stack.Screen 
           name="Upload" 
           component={RecipeImageUploadScreen} 
+          options={{ headerShown: false }} 
+        />
+         <Stack.Screen 
+          name="cookingLearning" 
+          component={CookingLearningScreen} 
+          options={{ headerShown: false }} 
+        />
+          <Stack.Screen 
+          name="cookingLearningDetails" 
+          component={CookingLearningDetailsScreen} 
           options={{ headerShown: false }} 
         />
 
