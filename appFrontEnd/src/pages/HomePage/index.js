@@ -37,6 +37,17 @@ const HomeScreen = () => {
     </TouchableOpacity>
   );
 
+  const logout = async () => {
+    try {
+      await AsyncStorage.removeItem('userToken');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' }], 
+      });
+    } catch (error) {
+      console.error('Failed to logout:', error);
+    }
+  };
 
 
   return (
@@ -53,6 +64,7 @@ const HomeScreen = () => {
             <MenuOption onSelect={() => navigation.navigate('favourites')} text='favourites' />
 
             <MenuOption onSelect={() => navigation.navigate('cookingLearning')} text='cookingLearning' />
+            <MenuOption onSelect={logout} text='Logout' /> 
           </MenuOptions>
         </Menu>
       </View>

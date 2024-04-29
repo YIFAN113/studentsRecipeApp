@@ -10,10 +10,7 @@ const reviewSchema = new mongoose.Schema({
 const recipeSchema = new mongoose.Schema({
     title: {type: String, required: true, index: true},
     Image: {type: String},
-    types: [{type: String}],
     budget:{type: Number},
-    tools: [{type: String}],
-    location: {type: String},
     tags: {
         cookingMethod: [{ type: String, index: true }],
         cookingTime: [{ type: String, index: true }],
