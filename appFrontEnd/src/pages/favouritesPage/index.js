@@ -3,7 +3,14 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { Dimensions } from 'react-native';
 
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+
+const itemWidth = screenWidth * 0.4;
+const itemHeight = screenHeight * 0.15;
+const marginHeight = screenHeight * 0.025;
 const FavouritesScreen = () => {
   const [favouriteRecipes, setFavouriteRecipes] = useState([]);
   const navigation = useNavigation();
@@ -51,14 +58,20 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
+    fontWeight: 'bold',
+    color: 'purple',
+    textAlign: 'center',
+    marginBottom: 20, 
   },
   item: {
     backgroundColor: '#f9c2ff',
-    padding: 20,
+    padding: 8,
     marginVertical: 8,
-    marginHorizontal: 16,
+    marginHorizontal: marginHeight,
     alignItems: 'center', 
-    flex: 1,
+    width: itemWidth,
+    height: itemHeight,
+    borderRadius:10
   },
 });
 

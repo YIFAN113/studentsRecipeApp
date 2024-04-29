@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text,TextInput, FlatList, TouchableOpacity, StyleSheet, Modal,Button } from 'react-native';
+import { View, Text,TextInput, FlatList, TouchableOpacity, StyleSheet, Modal,Button,ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dimensions } from 'react-native';
 const screenWidth = Dimensions.get('window').width;
+
+const screenHeight = Dimensions.get('window').height;
+
+const itemWidth = screenWidth * 0.4;
+const itemHeight = screenHeight * 0.15;
+const marginHeight = screenHeight * 0.02;
 const RecipeSearchScreen = () => {
     const [selectedTags, setSelectedTags] = useState({
         cookingMethod: [],
@@ -93,6 +99,7 @@ const RecipeSearchScreen = () => {
   onRequestClose={toggleModal}
 >
   <View style={styles.modalView}>
+  <ScrollView>
     {Object.keys(tagCategories).map(category => (
       <View key={category}>
         <Text style={styles.label}>{category}:</Text>
@@ -106,7 +113,7 @@ const RecipeSearchScreen = () => {
         ))}
       </View>
     ))}
-    
+    </ScrollView>
     <TouchableOpacity style={styles.button} onPress={() => setModalVisible(false)}>
       <Text style={styles.buttonText}>Close</Text>
     </TouchableOpacity>
@@ -117,7 +124,7 @@ const RecipeSearchScreen = () => {
                 style={styles.input}
                 onChangeText={setBudget}
                 value={budget}
-                placeholder="Enter your budget"
+                placeholder="Enter your budget($)"
                 keyboardType="numeric"
             />
             <TouchableOpacity style={styles.button} onPress={handleSearch}>
@@ -147,12 +154,29 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: '#f9c2ff',
-    padding: 20,
+    padding: 8,
     marginVertical: 8,
-    marginHorizontal: 16,
+    marginHorizontal: marginHeight,
     alignItems: 'center', 
-    flex: 1,
+    width: itemWidth,
+    height: itemHeight,
+    borderRadius:10
   },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+shadowColor: "#000",
+shadowOffset: {
+  width: 0,
+  height: 2
+},
+shadowOpacity: 0.25,
+shadowRadius: 4,
+elevation: 5
+},
   title: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -170,7 +194,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap', 
         justifyContent: 'space-between', 
         marginBottom: 20,
-        width: screenWidth,
+        width: 200,
     },
     tag: {
         borderWidth: 1,
@@ -206,15 +230,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
     },
-    recipeItem: {
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
-    },
-    recipeTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
+
     
 });
 

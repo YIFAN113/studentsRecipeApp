@@ -51,6 +51,10 @@ const RecipeDetailScreen = ({ route }) => {
     <ScrollView style={styles.container}>
       <Text style={styles.title}>{recipe.title}</Text>
       <View style={styles.section}>
+        <Text style={styles.sectionTitle}>BUDGET</Text>
+        <Text style={styles.text}>${recipe.budget}</Text>
+      </View>
+      <View style={styles.section}>
         <Text style={styles.sectionTitle}>INGREDIENT</Text>
         {recipe.ingredients.map((ingredient) => (
           <Text key={ingredient._id} style={styles.text}>{ingredient.name} - {ingredient.quantity}</Text>
